@@ -71,6 +71,11 @@ class Parser {
           left = exprStack.removeLast();
           currExpr = left ^ right;
           break;
+        case TokenType.EXP:
+          right = exprStack.removeLast();
+          left = exprStack.removeLast();
+          currExpr = Exponent(left, right);
+          break;
         case TokenType.EFUNC:
           currExpr = Exponential(exprStack.removeLast());
           break;
@@ -177,6 +182,7 @@ class Lexer {
     keywords['/'] = TokenType.DIV;
     keywords['%'] = TokenType.MOD;
     keywords['^'] = TokenType.POW;
+    keywords['e'] = TokenType.EXP;
     keywords['nrt'] = TokenType.ROOT;
     keywords['sqrt'] = TokenType.SQRT;
     keywords['log'] = TokenType.LOG;
@@ -191,7 +197,7 @@ class Lexer {
     keywords['floor'] = TokenType.FLOOR;
     keywords['sgn'] = TokenType.SGN;
     keywords['ln'] = TokenType.LN;
-    keywords['e'] = TokenType.EFUNC;
+    keywords['E'] = TokenType.EFUNC;
     keywords['('] = TokenType.LBRACE;
     keywords[')'] = TokenType.RBRACE;
     keywords['{'] = TokenType.LBRACE;
@@ -518,6 +524,8 @@ class TokenType {
   static const TokenType MOD = TokenType._internal('MOD', 2, operator: true);
   static const TokenType POW =
       TokenType._internal('POW', 4, leftAssociative: false, operator: true);
+  static const TokenType EXP =
+      TokenType._internal('EXP', 4, leftAssociative: false, operator: true);
   static const TokenType UNMINUS =
       TokenType._internal('UNMINUS', 3, leftAssociative: false, operator: true);
 

@@ -652,6 +652,53 @@ class Power extends BinaryOperator {
   Expression asE() => Exponential(second * Ln(first));
 }
 
+/// The plus operator performs an addition.
+class Exponent extends BinaryOperator {
+  /// Creates an addition operation on the given expressions.
+  //
+  /// For example, to create x e 4:
+  ///
+  ///     exp = Exponent('x', 4);
+  ///
+  /// or:
+  ///
+  ///     epx = Variable('x') e Number(4);
+  Exponent(dynamic base, dynamic exp) : super(base, exp);
+
+  @override
+  Expression derive(String toVar) =>
+      Exponent(first.derive(toVar), second.derive(toVar));
+
+  /// Possible simplifications:
+  ///
+  /// 1. 0ea = 0
+  /// 2. ae1 = a
+  @override
+  Expression simplify() {
+    final Expression baseOp = first.simplify();
+    final Expression expOp = second.simplify();
+
+    if (_isNumber(baseOp, 0)) {
+      return baseOp; // 0e1 = 0
+    }
+
+    if (_isNumber(expOp, 0)) {
+      return baseOp; // 2e0 = 2
+    }
+
+    return Exponent(baseOp, expOp);
+  }
+
+  @override
+  dynamic evaluate(EvaluationType type, ContextModel context) {
+    first.evaluate(type, context) *
+        math.pow(10, second.evaluate(type, context));
+  }
+
+  @override
+  String toString() => '($first e $second)';
+}
+
 /// A literal can be a number, a constant or a variable.
 abstract class Literal extends Expression {
   dynamic value;

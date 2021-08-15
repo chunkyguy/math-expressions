@@ -338,25 +338,25 @@ class ParserTests extends TestSet {
 
     // Exp
     // function syntax
-    inputStrings.add('e(x)');
+    inputStrings.add('E(x)');
     tokenStreams.add([
-      Token('e', TokenType.EFUNC),
+      Token('E', TokenType.EFUNC),
       Token('(', TokenType.LBRACE),
       Token('x', TokenType.VAR),
       Token(')', TokenType.RBRACE),
     ]);
     rpnTokenStreams
-        .add([Token('x', TokenType.VAR), Token('e', TokenType.EFUNC)]);
+        .add([Token('x', TokenType.VAR), Token('E', TokenType.EFUNC)]);
 
     // power syntax
-    inputStrings.add('e^x');
-    tokenStreams.add([Token('e', TokenType.EFUNC), Token('x', TokenType.VAR)]);
+    inputStrings.add('E^x');
+    tokenStreams.add([Token('E', TokenType.EFUNC), Token('x', TokenType.VAR)]);
     rpnTokenStreams
-        .add([Token('x', TokenType.VAR), Token('e', TokenType.EFUNC)]);
+        .add([Token('x', TokenType.VAR), Token('E', TokenType.EFUNC)]);
 
-    inputStrings.add('e^(x+2)');
+    inputStrings.add('E^(x+2)');
     tokenStreams.add([
-      Token('e', TokenType.EFUNC),
+      Token('E', TokenType.EFUNC),
       Token('(', TokenType.LBRACE),
       Token('x', TokenType.VAR),
       Token('+', TokenType.PLUS),
@@ -367,8 +367,25 @@ class ParserTests extends TestSet {
       Token('x', TokenType.VAR),
       Token('2', TokenType.VAL),
       Token('+', TokenType.PLUS),
-      Token('e', TokenType.EFUNC)
+      Token('E', TokenType.EFUNC)
     ]);
+
+    // exponent syntax
+    // inputStrings.add('x/1e6');
+    // tokenStreams.add([
+    //   Token('x', TokenType.VAR),
+    //   Token('/', TokenType.DIV),
+    //   Token('1', TokenType.VAL),
+    //   Token('e', TokenType.EXP),
+    //   Token('6', TokenType.VAL),
+    // ]);
+    // rpnTokenStreams.add([
+    //   Token('1', TokenType.VAL),
+    //   Token('6', TokenType.VAL),
+    //   Token('e', TokenType.EXP),
+    //   Token('x', TokenType.VAR),
+    //   // Token('/', TokenType.DIV),
+    // ]);
 
     // Algorithmic function
     pars.addFunction('my_min', (List<double> args) => args.reduce(math.min));
